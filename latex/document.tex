@@ -121,7 +121,16 @@ Se vor liniariza mărimile din sistem după formulele următoare:
 
 \section {Etapa 2}
 
-\subsection {Caracteristici proces }
+\subsection {Configurare experiment}
+
+Am pornit WinReg si am comutat intrerupatoarele evidentiate in imagine spre dreapta:
+
+\begin{figure}[H]
+  \centering
+    \fbox{ \includegraphics[width=0.8\textwidth]{instalatie_switchuri.png}}
+\end{figure}
+
+\subsection {Caracteristici proces}
 \begin{table}[H]
   \centering
   \begin{tabular}{|l|l|l|l|}
@@ -135,6 +144,39 @@ Se vor liniariza mărimile din sistem după formulele următoare:
 \end{table}
 
 \subsection {Caracteristici proces }
+
+Am aplicat comanda nominala $u_0 = 55\%$, iar dupa am ridicat-o la $u_1 = 75\%$
+\begin{figure}[H]
+  \centering
+    \fbox{ \includegraphics[width=0.8\textwidth]{2_3_1.eps}}
+\end{figure}
+
+\subsection {Model liniar}
+Pe baza raspunsului la treapta, am propus urmatorul model:
+\begin{equation*}
+H_{F} =e^{-s\tau }\frac{K_{F}}{T_{F} s+1}
+\end{equation*}
+
+unde:
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|l|l|l|l|}
+    \hline
+    $\tau$ & $K_F$ & $T_F$ & $t_t$ \\
+    \hline
+    $12 [s]$ & $29/55$ & $160/3$ & $157 [s]$ \\
+    \hline
+  \end{tabular}
+  \caption{Caracteristici model liniarizat.}
+\end{table}
+
+Am realizat o simulare a modelului si am suprapus-o peste datele masurate, folosite pentru identificare:
+
+\begin{figure}[H]
+  \centering
+    \fbox{ \includegraphics[width=0.8\textwidth]{2_4_1.eps}}
+\end{figure}
+
 
 
 \section {Etapa 3}

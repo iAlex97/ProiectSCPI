@@ -20,11 +20,18 @@ t = 0:Te1:n-1;
 
 figure;
 hold on;
-plot(t, u);
-plot(t, y);
 
-step(u_amp*Hf, n);
+[ylin,~] = step(u_amp*Hf, t);
+plot(t, ylin);
+
+plot(t, y);
+plot(t, u);
+
+legend('comanda', 'iesirea', 'sistem liniar');
+
 hold off;
+
+stepinfo(ylin, t, 'RiseTimeLimits', [0.05 0.95])
 
 % regulator PI
 Ti = 0.8*delay/2
