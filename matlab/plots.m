@@ -34,16 +34,27 @@ hold off;
 stepinfo(ylin, t, 'RiseTimeLimits', [0.05 0.95])
 
 % regulator PI
-Ti = 0.8*delay/2
-Kr = 0.7*(Tf)/(delay*Tf)
+% Ti = 0.8*delay + 0.5*Tf
+% Kr = 0.7*(Tf)/(delay*Kf)
+Kr = 0.9327
+Ti = 36.5748
 
 Hr = Kr * (1 + 1/(Ti*s));
 Hd = Hr * Hf;
 
 H0 = Hd/(1+Hd);
 
-c2d(Hr, 1, 'tustin')
+Hr_d = c2d(Hr, 1, 'tustin')
+
+% lsim(H0, u, t)
+[y_reg_d,t_reg_d] = step(u_amp*H0);
+stepinfo(y_reg_d, t_reg_d, 'RiseTimeLimits', [0.05 0.95])
 
 figure;
-% lsim(H0, u, t)
-step(H0)
+
+hold on;
+plot(t_reg_d, y_reg_d)
+plot(t_reg_d, u_amp * ones(length(t_reg_d)))
+
+legend('y(t)', 'r(t)')
+hold off;

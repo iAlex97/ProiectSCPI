@@ -181,19 +181,97 @@ Am realizat o simulare a modelului si am suprapus-o peste datele masurate, folos
 
 \section {Etapa 3}
 
+\subsection {Performante impuse}
 
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|l|l|}
+    \hline
+    $\sigma$ & $t_t$ \\
+    \hline
+    1.5[\%] & 198 [s] \\
+    \hline
+  \end{tabular}
+  \caption{Performante impuse}
+\end{table}
 
-% \begin{center}
-%   \fbox{ \includegraphics[width=0.8\textwidth]{8_1_1.eps}}
-% \end{center}
+Initial am incercat acordarea cu reg Kopelovici I si am dat gresi. Am notat factorii $K_R$ si $T_I$ obtinuti si am ajuns la concluzia ca nu satisfac performantele impuse.
 
-\newpage
+Pentru atingerea performantelor impuse, am folosit un algoritm genetic si factorii anterior calculati pentru setarea limitelor de variatie ai parametrilor PID-ului.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|l|l|}
+    \hline
+    $K_R$ & $T_I$ \\
+    \hline
+    0.9327 & 36.5748 \\
+    \hline
+  \end{tabular}
+  \caption{Performante impuse}
+\end{table}
+
+\subsection {Simulare in continuu}
+
+\begin{figure}[H]
+  \centering
+    \fbox{ \includegraphics[width=0.8\textwidth]{3_2_1.eps}}
+\end{figure}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|l|l|}
+    \hline
+    $\sigma$ & $t_t$ \\
+    \hline
+    1.47[\%] & 192.14 [s] \\
+    \hline
+  \end{tabular}
+  \caption{Performante obtinute}
+\end{table}
+
+Parametrii obtinuti ai regulatorului satisfac cerintele de performanta impuse
+
+\subsection {Discretizarea legii de control}
+Regulatorul obtinut prin discretizare Tustin:
+
+\begin{equation*}
+H_{R}\left[ z^{-1}\right] =\frac{0.9455-0.9199z^{-1}}{1-z^{-1}}
+\end{equation*}
+
+\subsection {Simularea regulatorului discret}
+
+Am realizat urmatoarea schema Simulink:
+
+\begin{figure}[H]
+  \centering
+    \fbox{ \includegraphics[width=0.8\textwidth]{regulator_discret.pdf}}
+\end{figure}
+
+Rezultatul simularii:
+\begin{figure}[H]
+  \centering
+    \fbox{ \includegraphics[width=0.8\textwidth]{3_4_1.eps}}
+\end{figure}
+
+Se observa ca regulatorul discretizat asigura performantele de reglare impuse sistemului in bucla inchisa.
+
+\subsection {Implementarea legii de control}
+
+Am pornit aplicatia WinSCPI si am configurat regulatorul astfel:
+
+\begin{lstlisting}
+u[k] = u[k-1] + 0.06441*(r[k] - y[k]) - 0.05226*(r[k-1] - y[k-1])
+\end{lstlisting}
+
+\begin{figure}[H]
+  \centering
+    \fbox{ \includegraphics[width=0.8\textwidth]{3_5_1.eps}}
+\end{figure}
 
 \subsection {Concluzii}
 \begin{itemize}
-  \item MCMMPE ofera o precizie inferioara metodei MEMP
-  \item Estimarea perturbatiilor oferite de modelul ARX trunchiat duc la pierderea preciziei estimarii
-  \item Utila ca baza de initializare in alte problem datorita simplitatii de calcul
+  \item Se observa ca overshoot-ul este mai mare in realitate
 \end{itemize}
 
 \section{Cod MATLab}
