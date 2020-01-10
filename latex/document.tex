@@ -46,7 +46,7 @@
 \newpage
 
 \section {Etapa 1}
-\subsection {Ini}
+\subsection {Initializare}
 
 \begin{table}[H]
   \centering
@@ -61,7 +61,38 @@
 \end{table}
 
 \subsection {Determinați elementele de execuție si traductoarele}
-Poze de pe telefon
+\begin{figure}[H]
+  \centering
+    \fbox{ \includegraphics[width=0.6\textwidth]{instalatie_senzor.png}}
+  \caption{Senzor ultrasonic de nivel}
+\end{figure}
+
+Nota: senzorul este acompaniat de o placuta Arudino pentru achizitia datelor/interpretarea lor si transmiterea catre aplicatia WinSCPI.
+
+\begin{figure}[H]
+  \centering
+    \fbox{ \includegraphics[width=0.6\textwidth]{instalatie_pompa.png}}
+  \caption{Pompa de apa}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \fbox{ \includegraphics[width=0.6\textwidth]{instalatie_valva_in.png}}
+  \caption{Valva conducta de intrare}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \fbox{ \includegraphics[width=0.6\textwidth]{instalatie_valva_out.png}}
+  \caption{Valva conducta de evacuare}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \fbox{ \includegraphics[width=0.6\textwidth]{instalatie_regulator.png}}
+  \caption{Regulator discret}
+\end{figure}
+
 
 \subsection {Care este mărimea fizică care se reglează ?}
 A: Inaltimea nominala a lichidului $[m]$
@@ -117,6 +148,34 @@ Se vor liniariza mărimile din sistem după formulele următoare:
   \end{cases}
   \end{equation*}
 \end{center}
+
+Se doreste controlul nimvelului, deci in ecuatia anterioara, dupa liniarizare, trebuie inlocuit $\Delta F_e(t)$ cu dependenta fata de nivel. Pentru aceasta inlocuire se poate folosi:
+\begin{equation*}
+F_{e}( t) =a\sqrt{gL( t)}
+\end{equation*}
+
+Urmeaza dezvoltarea in serie Taylor:
+\begin{equation*}
+F_{e}( t) =F_{e0} +\left(\dfrac{\partial F_{e}}{\partial L}\right)_{L=L_{0}}\frac{( L-L_{0})}{1!} +\left(\dfrac{\partial ^{2} F_{e}}{\partial ^{2} L}\right)_{L=L_{0}}\frac{( L-L_{0})^{2}}{2!} +\ \dotsc 
+\end{equation*}
+
+Se vor face simplificari dupa liniarizare:
+\begin{equation*}
+( \Delta f( x))^{2} \approx 0
+\end{equation*}
+
+Se normeaza marimile de interes:
+\begin{equation*}
+\begin{cases}
+y( t) =\frac{\Delta L( t)}{L_{0}}\\
+m( t) =\frac{\Delta F_{a}( t)}{F_{a0}}
+\end{cases}
+\end{equation*}
+
+Ecuatia devine in final, din care se pot identifica factorii cautati:
+\begin{equation*}
+T_{P}\frac{dy( t)}{dt} +y( t) =K_{P} \cdot m( t)
+\end{equation*}
 
 
 \section {Etapa 2}
@@ -195,7 +254,7 @@ Am realizat o simulare a modelului si am suprapus-o peste datele masurate, folos
   \caption{Performante impuse}
 \end{table}
 
-Initial am incercat acordarea cu reg Kopelovici I si am dat gresi. Am notat factorii $K_R$ si $T_I$ obtinuti si am ajuns la concluzia ca nu satisfac performantele impuse.
+Initial am incercat acordarea cu regulator de tip Kopelovici I. Am notat factorii $K_R$ si $T_I$ obtinuti si am ajuns la concluzia ca nu satisfac performantele impuse.
 
 Pentru atingerea performantelor impuse, am folosit un algoritm genetic si factorii anterior calculati pentru setarea limitelor de variatie ai parametrilor PID-ului.
 
@@ -208,7 +267,7 @@ Pentru atingerea performantelor impuse, am folosit un algoritm genetic si factor
     0.9327 & 36.5748 \\
     \hline
   \end{tabular}
-  \caption{Performante impuse}
+  \caption{Parametrii PID-ului obtinuti in urma acordarii}
 \end{table}
 
 \subsection {Simulare in continuu}
@@ -272,10 +331,8 @@ u[k] = u[k-1] + 0.06441*(r[k] - y[k]) - 0.05226*(r[k-1] - y[k-1])
 \subsection {Concluzii}
 \begin{itemize}
   \item Se observa ca overshoot-ul este mai mare in realitate
+  \item Perfomantele de timp tranzitoriu sunt respectate
+  \item Urmarirea referintei este asigurata ($\varepsilon _{st} = 0$)
 \end{itemize}
-
-\section{Cod MATLab}
-% \subsection {ISLAB\_6A}
-% \lstinputlisting[firstline=174,lastline=387]{../Scripts/ISLAB_6A.m}
 
 \end{document}
